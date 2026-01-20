@@ -1,0 +1,44 @@
+/* 全局样式重置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* 移动端适配 */
+@media (max-width: 1024px) {
+  .glass-effect {
+    padding: 1rem !important;
+  }
+
+  nav {
+    padding: 1rem !important;
+  }
+
+  h1 {
+    font-size: 1.5rem !important;
+  }
+
+  h2 {
+    font-size: 1.25rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .flex {
+    flex-direction: column !important;
+  }
+
+  button {
+    width: 100%;
+  }
+}
