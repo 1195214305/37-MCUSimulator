@@ -5,6 +5,7 @@ export class MCUSimulator {
   private state: MCUState
   private intervalId: number | null = null
   private executionCallback: ((state: MCUState) => void) | null = null
+  private userIntervals: number[] = []
 
   constructor() {
     this.state = this.initializeState()
@@ -185,6 +186,23 @@ export class MCUSimulator {
         console.log(`延时 ${ms}ms`)
       },
 
+      // 定时器函数
+      setInterval: (callback: Function, ms: number): number => {
+        const id = window.setInterval(() => {
+          callback()
+          this.notifyStateChange()
+        }, ms)
+        this.userIntervals.push(id)
+        return id
+      },
+      clearInterval: (id: number) => {
+        window.clearInterval(id)
+        const index = this.userIntervals.indexOf(id)
+        if (index > -1) {
+          this.userIntervals.splice(index, 1)
+        }
+      },
+
       // 工具函数
       console: {
         log: (...args: any[]) => {
@@ -218,6 +236,9 @@ export class MCUSimulator {
       clearInterval(this.intervalId)
       this.intervalId = null
     }
+    // 清除所有用户创建的 intervals
+    this.userIntervals.forEach(id => clearInterval(id))
+    this.userIntervals = []
     this.notifyStateChange()
   }
 
